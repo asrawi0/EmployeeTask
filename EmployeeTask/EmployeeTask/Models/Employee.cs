@@ -11,7 +11,8 @@ namespace EmployeeTask.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel;
     public partial class Employee
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,10 +22,18 @@ namespace EmployeeTask.Models
         }
     
         public int Id { get; set; }
+        [Required]
+        [MaxLength(50)]
         public string Name { get; set; }
+        [RegularExpression(@"\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b", ErrorMessage = "Invalid email format.") ]
+        [Required]
+        [MaxLength(50)]
         public string Email { get; set; }
+        [MaxLength(10)]
         public string PhoneNo { get; set; }
         public string Descraption { get; set; }
+        [Required]
+        [DisplayName("Department Name")]
         public string DepartmentName { get; set; }
         public string Postion { get; set; }
     
