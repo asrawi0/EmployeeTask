@@ -12,7 +12,7 @@ namespace EmployeeTask.Controllers
 {
     public class TasksController : Controller
     {
-        private EmployeeTaskEntities db = new EmployeeTaskEntities();
+        private EmployeeTaskEntities db   = new EmployeeTaskEntities();
 
         // GET: Tasks
         public ActionResult Index()
