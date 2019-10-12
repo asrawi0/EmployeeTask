@@ -7,6 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
+
 namespace EmployeeTask.Models
 {
     using System;
@@ -15,14 +19,26 @@ namespace EmployeeTask.Models
     public partial class Task
     {
         public int Id { get; set; }
+        [Required]
+        [MaxLength(50)]
         public string Name { get; set; }
+        [MaxLength(255)]
         public string Descraption { get; set; }
+        [DisplayName("Is Complate")]
         public Nullable<bool> IsComplate { get; set; }
-        public Nullable<int> EmployeeId { get; set; }
+        public int? EmployeeId { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public Nullable<System.DateTime> AssignDate { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public Nullable<System.DateTime> ComplatedDate { get; set; }
+        [MaxLength(255)]
         public string comment { get; set; }
     
         public virtual Employee Employee { get; set; }
+        
+
+
     }
 }

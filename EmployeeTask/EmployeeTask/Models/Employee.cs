@@ -24,17 +24,26 @@ namespace EmployeeTask.Models
         public int Id { get; set; }
         [Required]
         [MaxLength(50)]
+        [DisplayName("Employee Name")]
         public string Name { get; set; }
-        [RegularExpression(@"\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b", ErrorMessage = "Invalid email format.") ]
+        [RegularExpression(@"^[_a-z0-9-]+(.[a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$", ErrorMessage = "Invalid email format.") ]
+        [DataType(DataType.EmailAddress)]
         [Required]
         [MaxLength(50)]
         public string Email { get; set; }
         [MaxLength(10)]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Invalid Phone number")]
+        [Required(ErrorMessage = "Phone Number is needed.")]
+        [Display(Name = "Phone")]
+        [DataType(DataType.PhoneNumber)]
         public string PhoneNo { get; set; }
+       [MaxLength(255)]
         public string Descraption { get; set; }
         [Required]
         [DisplayName("Department Name")]
+        [MaxLength(50)]
         public string DepartmentName { get; set; }
+        [MaxLength(100)]
         public string Postion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

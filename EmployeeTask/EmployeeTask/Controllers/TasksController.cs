@@ -39,7 +39,11 @@ namespace EmployeeTask.Controllers
         // GET: Tasks/Create
         public ActionResult Create()
         {
-            ViewBag.EmployeeId = new SelectList(db.Employees, "Id", "Name");
+
+
+            var items = new SelectList(db.Employees, "Id", "Name").ToList();
+            items.Insert(0, (new SelectListItem { Text = "[None]" ,Value = string.Empty}));
+            ViewBag.EmployeeId = items;
             return View();
         }
 
@@ -52,13 +56,32 @@ namespace EmployeeTask.Controllers
         {
             if (ModelState.IsValid)
             {
+                if(!task.AssignDate.HasValue && task.EmployeeId.HasValue)
+                {
+                    task.AssignDate= DateTime.Now;
+                }
                 db.Tasks.Add(task);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.EmployeeId = new SelectList(db.Employees, "Id", "Name", task.EmployeeId);
+            BindEmployee(task);
             return View(task);
+        }
+
+        private void BindEmployee(Task task)
+        {
+            if (task.EmployeeId.HasValue)
+            {
+                ViewBag.EmployeeId = new SelectList(db.Employees, "Id", "Name", task?.EmployeeId);
+            }
+
+            else
+            {
+                var items = new SelectList(db.Employees, "Id", "Name").ToList();
+                items.Insert(0, (new SelectListItem {Text = "[None]", Value = string.Empty}));
+                ViewBag.EmployeeId = items;
+            }
         }
 
         // GET: Tasks/Edit/5
@@ -73,7 +96,9 @@ namespace EmployeeTask.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.EmployeeId = new SelectList(db.Employees, "Id", "Name", task.EmployeeId);
+
+
+            BindEmployee(task);
             return View(task);
         }
 
@@ -86,11 +111,16 @@ namespace EmployeeTask.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (!task.AssignDate.HasValue && task.EmployeeId.HasValue)
+                {
+                    task.AssignDate = DateTime.Now;
+                }
+
                 db.Entry(task).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.EmployeeId = new SelectList(db.Employees, "Id", "Name", task.EmployeeId);
+            BindEmployee(task);
             return View(task);
         }
 
@@ -106,6 +136,9 @@ namespace EmployeeTask.Controllers
             {
                 return HttpNotFound();
             }
+          
+
+
             return View(task);
         }
 
@@ -115,6 +148,7 @@ namespace EmployeeTask.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Task task = db.Tasks.Find(id);
+           
             db.Tasks.Remove(task);
             db.SaveChanges();
             return RedirectToAction("Index");

@@ -110,10 +110,17 @@ namespace EmployeeTask.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Employee employee = db.Employees.Find(id);
-            
-            db.Employees.Remove(employee);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            Task task = db.Tasks.FirstOrDefault(x => x.EmployeeId == id);
+            if (task == null)
+            {
+                db.Employees.Remove(employee);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.result = "can not delete this Employee " + employee.Name + " has a Task";
+            return View(employee);
+            ///
         }
 
         protected override void Dispose(bool disposing)
